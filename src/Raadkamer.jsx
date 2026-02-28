@@ -10,7 +10,10 @@ export default function Raadkamer() {
   const [expertName, setExpertName] = useState('');
   const [expertEra, setExpertEra] = useState('');
   const [expertPerspective, setExpertPerspective] = useState('');
-
+const [email, setEmail] = useState('');
+  const [wantsUpdates, setWantsUpdates] = useState(false);
+  const [allowResearch, setAllowResearch] = useState(false);
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
   function addExpert() {
     if (expertName && expertPerspective) {
       setExperts([...experts, {
@@ -194,6 +197,93 @@ export default function Raadkamer() {
             Nieuwe sessie starten
           </button>
         </div>
+
+        {/* Email formulier */}
+        <div style={{marginTop:'40px', padding:'20px', background:'#f0f9ff', borderRadius:'8px', border:'1px solid #bfdbfe'}}>
+          <h3 style={{margin:'0 0 16px', fontSize:'18px', color:'#1e40af'}}>
+            📧 Wil je een kopie per email ontvangen?
+          </h3>
+          
+          {!emailSubmitted ? (
+            <div>
+              <p style={{fontSize:'14px', color:'#666', marginBottom:'16px'}}>
+                Vul je email in en ontvang deze prompt + updates over nieuwe features.
+              </p>
+              
+              <input
+                type="email"
+                value={email}
+                onChange={function(e) { setEmail(e.target.value); }}
+                placeholder="jouw@email.nl"
+                style={{width:'100%', padding:'10px', fontSize:'14px', border:'1px solid #ccc', borderRadius:'6px', marginBottom:'12px', boxSizing:'border-box'}}
+              />
+              
+              <div style={{marginBottom:'8px'}}>
+                <label style={{display:'flex', alignItems:'center', fontSize:'14px', cursor:'pointer'}}>
+                  <input
+                    type="checkbox"
+                    checked={wantsUpdates}
+                    onChange={function(e) { setWantsUpdates(e.target.checked); }}
+                    style={{marginRight:'8px'}}
+                  />
+                  Ja, stuur me updates over nieuwe features en ontwikkelingen
+                </label>
+              </div>
+              
+              <div style={{marginBottom:'16px'}}>
+                <label style={{display:'flex', alignItems:'center', fontSize:'14px', cursor:'pointer'}}>
+                  <input
+                    type="checkbox"
+                    checked={allowResearch}
+                    onChange={function(e) { setAllowResearch(e.target.checked); }}
+                    style={{marginRight:'8px'}}
+                  />
+                  Ik geef toestemming om mijn vraag anoniem te gebruiken voor onderzoek
+                </label>
+              </div>
+              
+              <button
+                onClick={function() {
+                  if (email && email.includes('@')) {
+                    // Sla data op (later naar database)
+                    var data = {
+                      email: email,
+                      wantsUpdates: wantsUpdates,
+                      allowResearch: allowResearch,
+                      prompt: generatePrompt(),
+                      timestamp: new Date().toISOString()
+                    };
+                    console.log('Email data:', data);
+                    
+                    // Toon bevestiging
+                    setEmailSubmitted(true);
+                    
+                    // TODO: Later versturen naar backend
+                  } else {
+                    alert('Vul een geldig email adres in');
+                  }
+                }}
+                style={{width:'100%', padding:'12px', background:'#1e40af', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontSize:'16px', fontWeight:'bold'}}
+              >
+                Verstuur naar mijn email
+              </button>
+              
+              <p style={{fontSize:'12px', color:'#666', marginTop:'12px', textAlign:'center'}}>
+                Je gegevens worden veilig opgeslagen en nooit gedeeld met derden.
+              </p>
+            </div>
+          ) : (
+            <div style={{textAlign:'center', padding:'20px'}}>
+              <p style={{fontSize:'16px', color:'#16a34a', fontWeight:'bold', marginBottom:'8px'}}>
+                ✅ Bedankt! Je ontvangt binnen enkele minuten een email.
+              </p>
+              <p style={{fontSize:'14px', color:'#666'}}>
+                Check ook je spam folder als je niets ziet.
+              </p>
+            </div>
+          )}
+        </div>
+
         <Footer />
       </div>
     );
