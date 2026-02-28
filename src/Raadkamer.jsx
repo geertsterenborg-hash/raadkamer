@@ -37,6 +37,25 @@ export default function Raadkamer() {
     return '# Raadkamer Prompt\n\n## Vraagstuk\n' + topic + '\n\n## Context\n' + context + '\n\n## Doel\n' + goal + '\n\n## Experts\n' + expertText + '\n\n## Synthese\n' + synthesis + '\n\n---\nGegenereerd via de Raadkamer methode';
   }
 
+  // Footer component
+  const Footer = () => (
+    <div style={{
+      marginTop: '40px',
+      paddingTop: '20px',
+      borderTop: '1px solid #e5e7eb',
+      textAlign: 'center',
+      fontSize: '13px',
+      color: '#6b7280'
+    }}>
+      <p style={{margin: '8px 0'}}>
+        Powered by <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style={{color: '#1e40af', textDecoration: 'none'}}>Claude AI</a>
+      </p>
+      <p style={{margin: '8px 0', fontSize: '12px'}}>
+        © {new Date().getFullYear()} De Raadkamer • Geïnspireerd door DeLevenTV
+      </p>
+    </div>
+  );
+
   var s = {
     page: {maxWidth:'700px', margin:'40px auto', padding:'20px', fontFamily:'Arial'},
     h1: {color:'#1e40af'},
@@ -66,6 +85,7 @@ export default function Raadkamer() {
         <button style={s.btnBlue} onClick={function() { setStage('question'); }}>
           Begin de Raadkamer
         </button>
+        <Footer />
       </div>
     );
   }
@@ -86,6 +106,7 @@ export default function Raadkamer() {
             Volgende: Experts
           </button>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -127,6 +148,7 @@ export default function Raadkamer() {
             Volgende: Synthese ({experts.length}/2)
           </button>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -149,6 +171,7 @@ export default function Raadkamer() {
             Bekijk Prompt
           </button>
         </div>
+        <Footer />
       </div>
     );
   }
@@ -171,6 +194,7 @@ export default function Raadkamer() {
             Nieuwe sessie starten
           </button>
         </div>
+        <Footer />
       </div>
     );
   }
