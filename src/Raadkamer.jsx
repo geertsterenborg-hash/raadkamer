@@ -10,10 +10,11 @@ export default function Raadkamer() {
   const [expertName, setExpertName] = useState('');
   const [expertEra, setExpertEra] = useState('');
   const [expertPerspective, setExpertPerspective] = useState('');
-const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [wantsUpdates, setWantsUpdates] = useState(false);
   const [allowResearch, setAllowResearch] = useState(false);
   const [emailSubmitted, setEmailSubmitted] = useState(false);
+
   function addExpert() {
     if (expertName && expertPerspective) {
       setExperts([...experts, {
@@ -182,19 +183,40 @@ const [email, setEmail] = useState('');
   if (stage === 'export') {
     return (
       <div style={s.page}>
-        <h1 style={s.h1}>Jouw Prompt is Klaar!</h1>
-        <div style={{background:'#f9fafb', border:'1px solid #ccc', padding:'16px', borderRadius:'8px', maxHeight:'400px', overflowY:'auto'}}>
-          <pre style={{whiteSpace:'pre-wrap', fontSize:'13px', margin:0}}>{generatePrompt()}</pre>
+        <h1 style={s.h1}>🎉 Jouw Raadkamer Prompt is Klaar!</h1>
+        
+        {/* Instructie box */}
+        <div style={{background:'#fef3c7', border:'2px solid #f59e0b', padding:'16px', borderRadius:'8px', marginBottom:'20px'}}>
+          <h3 style={{margin:'0 0 12px', fontSize:'16px', color:'#92400e'}}>
+            📝 Hoe gebruik je deze prompt?
+          </h3>
+          <ol style={{margin:'0', paddingLeft:'20px', fontSize:'14px', color:'#78350f', lineHeight:'1.6'}}>
+            <li>Klik op "Kopieer naar Klembord" hieronder</li>
+            <li>Ga naar <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style={{color:'#1e40af', textDecoration:'underline'}}>claude.ai</a> (opent in nieuw tabblad)</li>
+            <li>Plak de prompt in een nieuwe chat met Claude</li>
+            <li>Claude analyseert je vraagstuk en geeft een synthese!</li>
+          </ol>
         </div>
+
+        {/* De prompt zelf */}
+        <div style={{background:'#f9fafb', border:'1px solid #ccc', padding:'16px', borderRadius:'8px', maxHeight:'400px', overflowY:'auto', marginBottom:'16px'}}>
+          <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'12px', paddingBottom:'8px', borderBottom:'1px solid #e5e7eb'}}>
+            <span style={{fontSize:'14px', fontWeight:'bold', color:'#374151'}}>Jouw Raadkamer Prompt:</span>
+            <span style={{fontSize:'12px', color:'#6b7280'}}>{generatePrompt().length} karakters</span>
+          </div>
+          <pre style={{whiteSpace:'pre-wrap', fontSize:'13px', margin:0, color:'#1f2937'}}>{generatePrompt()}</pre>
+        </div>
+
         <div style={s.row}>
           <button style={s.btnWhite} onClick={function() { setStage('synthesis'); }}>Terug</button>
           <button style={{...s.btnBlue, flex:1}} onClick={function() { navigator.clipboard.writeText(generatePrompt()); alert('Gekopieerd!'); }}>
-            Kopieer naar Klembord
+            📋 Kopieer naar Klembord
           </button>
         </div>
+
         <div style={{textAlign:'center', marginTop:'16px'}}>
-          <button onClick={function() { setStage('intro'); setTopic(''); setGoal(''); setContext(''); setSynthesis(''); setExperts([]); }} style={{background:'none', border:'none', color:'#1e40af', cursor:'pointer', textDecoration:'underline'}}>
-            Nieuwe sessie starten
+          <button onClick={function() { setStage('intro'); setTopic(''); setGoal(''); setContext(''); setSynthesis(''); setExperts([]); setEmail(''); setEmailSubmitted(false); }} style={{background:'none', border:'none', color:'#1e40af', cursor:'pointer', textDecoration:'underline'}}>
+            🔄 Nieuwe sessie starten
           </button>
         </div>
 
@@ -245,7 +267,6 @@ const [email, setEmail] = useState('');
               <button
                 onClick={function() {
                   if (email && email.includes('@')) {
-                    // Sla data op (later naar database)
                     var data = {
                       email: email,
                       wantsUpdates: wantsUpdates,
@@ -254,11 +275,7 @@ const [email, setEmail] = useState('');
                       timestamp: new Date().toISOString()
                     };
                     console.log('Email data:', data);
-                    
-                    // Toon bevestiging
                     setEmailSubmitted(true);
-                    
-                    // TODO: Later versturen naar backend
                   } else {
                     alert('Vul een geldig email adres in');
                   }
